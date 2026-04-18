@@ -61,7 +61,7 @@ This project is a **frontend MVP prototype** simulating the full AI pipeline:
 ---
 
 ## 👨‍💻 Author
-- Your Name
+- Nikhil Sharma
 
 ---
 

@@ -1,0 +1,364 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary)}
+.hdr{background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:12px 20px;display:flex;align-items:center;gap:10px}
+.logo-box{width:30px;height:30px;background:#7F77DD;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.brand{font-size:16px;font-weight:500}
+.brand b{color:#7F77DD}
+.pill{font-size:11px;background:#EEEDFE;color:#3C3489;padding:2px 8px;border-radius:20px}
+.wrap{max-width:800px;margin:0 auto;padding:24px 20px}
+
+.tabs{display:flex;gap:3px;background:var(--color-background-secondary);padding:3px;border-radius:var(--border-radius-md);margin-bottom:24px}
+.tab{flex:1;text-align:center;padding:7px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--color-text-secondary);transition:all .15s}
+.tab.active{background:var(--color-background-primary);color:var(--color-text-primary);font-weight:500;border:0.5px solid var(--color-border-tertiary)}
+
+.panel{display:none}
+.panel.show{display:block}
+
+.drop{border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:40px 20px;text-align:center;background:var(--color-background-primary);cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:#7F77DD;background:#EEEDFE22}
+.drop-icon{width:44px;height:44px;background:#EEEDFE;border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.drop h3{font-size:15px;font-weight:500;margin-bottom:6px}
+.drop p{font-size:13px;color:var(--color-text-secondary);margin-bottom:16px}
+.drop small{font-size:11px;color:var(--color-text-tertiary);display:block;margin-top:10px}
+
+button{font-family:var(--font-sans);cursor:pointer}
+.btn-primary{background:#7F77DD;color:#fff;border:none;padding:9px 20px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500}
+.btn-primary:hover{background:#534AB7}
+.btn-primary:disabled{background:#AFA9EC;cursor:default}
+.btn-outline{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);padding:7px 14px;border-radius:var(--border-radius-md);font-size:12px}
+.btn-outline:hover{background:var(--color-background-secondary)}
+
+.preview-wrap{margin-top:20px;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.preview-top{padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between}
+.fname{font-size:13px;font-weight:500}
+.fmeta{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+video{width:100%;display:block;background:#000;max-height:360px}
+
+.cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.cfg-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.cfg-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.cfg-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.cfg-title{font-size:13px;font-weight:500}
+.cfg-sub{font-size:11px;color:var(--color-text-secondary)}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.row-label{font-size:12px;color:var(--color-text-secondary)}
+.tog{width:34px;height:19px;border-radius:10px;background:#AFA9EC;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.tog.on{background:#7F77DD}
+.tog::after{content:'';position:absolute;top:2.5px;left:2.5px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s}
+.tog.on::after{transform:translateX(15px)}
+.sl-row{margin-top:8px}
+.sl-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+input[type=range]{width:100%}
+
+.run-btn{width:100%;padding:13px;background:#7F77DD;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;margin:4px 0 28px;transition:background .15s}
+.run-btn:hover:not(:disabled){background:#534AB7}
+.run-btn:disabled{background:#AFA9EC;cursor:default}
+
+.proc-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:16px}
+.proc-hdr{padding:14px 18px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between}
+.proc-title{font-size:13px;font-weight:500}
+.spill{font-size:11px;padding:3px 9px;border-radius:20px}
+.s-run{background:#EEEDFE;color:#534AB7}
+.s-done{background:#EAF3DE;color:#3B6D11}
+.s-wait{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.pbar-wrap{height:3px;background:var(--color-background-secondary)}
+.pbar{height:3px;background:#7F77DD;transition:width .5s}
+.steps{padding:8px 18px}
+.step{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.step:last-child{border-bottom:none}
+.snum{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.sp{background:var(--color-background-secondary);color:var(--color-text-tertiary)}
+.sa{background:#EEEDFE;color:#534AB7}
+.sd{background:#EAF3DE;color:#3B6D11}
+.sinfo{flex:1}
+.sname{font-size:12px;font-weight:500}
+.sdesc{font-size:11px;color:var(--color-text-secondary)}
+.stime{font-size:10px;color:var(--color-text-tertiary)}
+
+.clips-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.clips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.clip-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.clip-vid-wrap{position:relative;background:#111;cursor:pointer}
+.clip-vid-wrap video{width:100%;display:block;max-height:180px;object-fit:contain}
+.clip-score{position:absolute;top:7px;right:7px;font-size:11px;font-weight:500;padding:2px 7px;border-radius:20px}
+.sh{background:#EAF3DE;color:#27500A}
+.sm{background:#EEEDFE;color:#3C3489}
+.clip-body{padding:11px}
+.clip-title{font-size:12px;font-weight:500;margin-bottom:4px;line-height:1.4}
+.clip-meta{font-size:11px;color:var(--color-text-secondary)}
+.clip-tag{font-size:10px;padding:2px 6px;border-radius:10px;background:#EEEDFE;color:#534AB7;display:inline-block;margin:5px 0}
+.clip-actions{display:flex;gap:5px;margin-top:8px}
+.dl-btn{background:#7F77DD;color:#fff;border:none;padding:6px 10px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;text-decoration:none;display:inline-block}
+.dl-btn:hover{background:#534AB7}
+.cap-btn{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);padding:6px 10px;border-radius:var(--border-radius-md);font-size:11px}
+.cap-btn:hover{background:var(--color-background-secondary)}
+
+.no-video-msg{padding:40px;text-align:center;color:var(--color-text-secondary);font-size:13px}
+</style>
+
+<h2 class="sr-only">AttentionX — upload a video, run AI analysis, preview and download clips</h2>
+
+<div class="hdr">
+  <div class="logo-box">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="3,2 13,8 3,14" fill="white"/><rect x="12" y="2" width="2" height="12" rx="1" fill="white" opacity=".7"/></svg>
+  </div>
+  <span class="brand">Attention<b>X</b></span>
+  <span class="pill">AI-Powered</span>
+  <span style="margin-left:auto;font-size:11px;color:var(--color-text-tertiary)">UnsaidTalks Hackathon</span>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" id="t1" onclick="go(1)">Upload</div>
+    <div class="tab" id="t2" onclick="go(2)">Configure</div>
+    <div class="tab" id="t3" onclick="go(3)">Processing</div>
+    <div class="tab" id="t4" onclick="go(4)">Results</div>
+  </div>
+
+  <div class="panel show" id="p1">
+    <div class="drop" id="dz"
+      ondragover="event.preventDefault();this.classList.add('over')"
+      ondragleave="this.classList.remove('over')"
+      ondrop="onDrop(event)"
+      onclick="fi.click()">
+      <div class="drop-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+      </div>
+      <h3 id="dz-title">Drop your video here</h3>
+      <p id="dz-sub">Lectures, podcasts, workshops — any length</p>
+      <button class="btn-primary" onclick="event.stopPropagation();fi.click()">Choose video file</button>
+      <small>MP4, MOV, AVI, MKV, WEBM</small>
+    </div>
+    <input type="file" id="fi" accept="video/*" style="display:none" onchange="onFile(this.files[0])">
+
+    <div class="preview-wrap" id="prev" style="display:none">
+      <div class="preview-top">
+        <div>
+          <div class="fname" id="fname"></div>
+          <div class="fmeta" id="fmeta"></div>
+        </div>
+        <button class="btn-outline" onclick="go(2)">Configure settings →</button>
+      </div>
+      <video id="srcvid" controls preload="metadata"></video>
+    </div>
+  </div>
+
+  <div class="panel" id="p2">
+    <div class="cfg-grid">
+      <div class="cfg-card">
+        <div class="cfg-head">
+          <div class="cfg-icon" style="background:#EEEDFE">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div><div class="cfg-title">Emotional peaks</div><div class="cfg-sub">Audio + sentiment</div></div>
+        </div>
+        <div class="row"><span class="row-label">Audio spike detection</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="row"><span class="row-label">Sentiment scoring</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sl-row"><div class="sl-lbl"><span>Min score</span><span id="sv">70%</span></div>
+        <input type="range" min="40" max="95" value="70" step="5" oninput="document.getElementById('sv').textContent=this.value+'%'"></div>
+      </div>
+      <div class="cfg-card">
+        <div class="cfg-head">
+          <div class="cfg-icon" style="background:#E1F5EE">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div><div class="cfg-title">Smart crop</div><div class="cfg-sub">Face-track to 9:16</div></div>
+        </div>
+        <div class="row"><span class="row-label">Auto vertical crop</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="row"><span class="row-label">Face centering</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sl-row"><div class="sl-lbl"><span>Clip length</span><span id="dv">60s</span></div>
+        <input type="range" min="15" max="90" value="60" step="15" oninput="document.getElementById('dv').textContent=this.value+'s'"></div>
+      </div>
+      <div class="cfg-card">
+        <div class="cfg-head">
+          <div class="cfg-icon" style="background:#FAEEDA">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#BA7517" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 10h18"/></svg>
+          </div>
+          <div><div class="cfg-title">Captions</div><div class="cfg-sub">Karaoke-style overlays</div></div>
+        </div>
+        <div class="row"><span class="row-label">Whisper transcription</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="row"><span class="row-label">Hook headline</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="row"><span class="row-label">High contrast style</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <div class="cfg-card">
+        <div class="cfg-head">
+          <div class="cfg-icon" style="background:#FAECE7">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D85A30" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          </div>
+          <div><div class="cfg-title">Output</div><div class="cfg-sub">Format &amp; clips</div></div>
+        </div>
+        <div class="row"><span class="row-label">TikTok / Reels (9:16)</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="row"><span class="row-label">YouTube Shorts</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        <div class="sl-row"><div class="sl-lbl"><span>Max clips</span><span id="cv">5</span></div>
+        <input type="range" min="1" max="10" value="5" step="1" oninput="document.getElementById('cv').textContent=this.value"></div>
+      </div>
+    </div>
+    <button class="run-btn" id="runbtn" onclick="startProc()">Generate clips with AI</button>
+  </div>
+
+  <div class="panel" id="p3">
+    <div class="proc-card">
+      <div class="proc-hdr">
+        <span class="proc-title" id="proc-fname">No file loaded</span>
+        <span class="spill s-wait" id="proc-status">Waiting</span>
+      </div>
+      <div class="pbar-wrap"><div class="pbar" id="pbar" style="width:0%"></div></div>
+      <div class="steps" id="steps"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p4">
+    <div id="results-area">
+      <div class="no-video-msg">No clips yet — upload a video and run the pipeline first.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STEPS=[
+  {n:"Upload & decode",d:"Parsing video container"},
+  {n:"Audio extraction",d:"Separating audio track"},
+  {n:"Whisper transcription",d:"Speech → timestamped text"},
+  {n:"Peak detection",d:"Librosa loudness + AI sentiment"},
+  {n:"Clip selection",d:"Ranking top moments"},
+  {n:"Face detection",d:"MediaPipe → 9:16 crop"},
+  {n:"Caption overlay",d:"Hook headlines + karaoke"},
+  {n:"Export render",d:"Writing final MP4 clips"}
+];
+const STEP_TIMES=[0.3,1.2,8,4,2,6,3.5,5];
+const HOOKS=[
+  "The one skill they never teach you",
+  "Why 90% of students fail this",
+  "Stop doing this immediately",
+  "The 3-step framework that changes everything",
+  "How I went from zero to offer in 6 weeks"
+];
+
+let videoFile=null, videoURL=null, clips=[];
+
+function go(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('p'+i).classList.remove('show');
+    document.getElementById('t'+i).classList.remove('active');
+  }
+  document.getElementById('p'+n).classList.add('show');
+  document.getElementById('t'+n).classList.add('active');
+}
+
+function onDrop(e){
+  e.preventDefault();
+  document.getElementById('dz').classList.remove('over');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('video/')) onFile(f);
+}
+
+function onFile(f){
+  if(!f) return;
+  videoFile=f;
+  if(videoURL) URL.revokeObjectURL(videoURL);
+  videoURL=URL.createObjectURL(f);
+  document.getElementById('fname').textContent=f.name;
+  document.getElementById('fmeta').textContent=formatSize(f.size)+' · '+f.type;
+  const v=document.getElementById('srcvid');
+  v.src=videoURL;
+  v.load();
+  document.getElementById('prev').style.display='block';
+  document.getElementById('dz-title').textContent=f.name+' loaded';
+  document.getElementById('dz-sub').textContent='Video ready. Click "Configure settings" to continue.';
+  document.getElementById('proc-fname').textContent=f.name;
+}
+
+function formatSize(b){
+  if(b>1e9) return (b/1e9).toFixed(1)+' GB';
+  if(b>1e6) return (b/1e6).toFixed(1)+' MB';
+  return (b/1e3).toFixed(0)+' KB';
+}
+
+function renderSteps(active){
+  document.getElementById('steps').innerHTML=STEPS.map((s,i)=>{
+    let cls='sp',lbl=(i+1).toString();
+    if(i<active){cls='sd';lbl='✓';}
+    else if(i===active){cls='sa';lbl='…';}
+    return `<div class="step"><div class="snum ${cls}">${lbl}</div><div class="sinfo"><div class="sname">${s.n}</div><div class="sdesc">${s.d}</div></div><div class="stime">${i<active?STEP_TIMES[i].toFixed(1)+'s':''}</div></div>`;
+  }).join('');
+}
+
+function startProc(){
+  if(!videoFile){alert('Please upload a video first.');go(1);return;}
+  go(3);
+  document.getElementById('proc-status').textContent='Running';
+  document.getElementById('proc-status').className='spill s-run';
+  renderSteps(0);
+  let step=0;
+  const iv=setInterval(()=>{
+    step++;
+    const pct=Math.round((step/STEPS.length)*100);
+    document.getElementById('pbar').style.width=pct+'%';
+    if(step>=STEPS.length){
+      clearInterval(iv);
+      renderSteps(STEPS.length);
+      document.getElementById('proc-status').textContent='Done';
+      document.getElementById('proc-status').className='spill s-done';
+      buildClips();
+      setTimeout(()=>go(4),700);
+    } else {
+      renderSteps(step);
+    }
+  },650);
+}
+
+function buildClips(){
+  const scores=[94,91,88,79,76];
+  const tags=['Emotional peak','High energy','Insight','Educational','Story'];
+  clips=scores.map((sc,i)=>({score:sc,tag:tags[i],hook:HOOKS[i]}));
+  renderResults();
+}
+
+function renderResults(){
+  if(!videoURL){
+    document.getElementById('results-area').innerHTML='<div class="no-video-msg">No clips yet — upload a video and run the pipeline first.</div>';
+    return;
+  }
+  const n=clips.length;
+  const dur=document.getElementById('srcvid').duration||60;
+  const segLen=dur/n;
+
+  let html=`<div class="clips-header">
+    <div style="font-size:13px;font-weight:500">${n} clips generated from <span style="color:#7F77DD">${videoFile?videoFile.name:''}</span></div>
+    <button class="btn-outline" onclick="sendPrompt('Write 5 viral TikTok captions for educational mentor clips about career growth')">Get captions ↗</button>
+  </div><div class="clips-grid">`;
+
+  clips.forEach((c,i)=>{
+    const start=Math.round(i*segLen);
+    const end=Math.min(Math.round((i+1)*segLen),Math.round(dur));
+    const typeClass=c.score>=85?'sh':'sm';
+    html+=`<div class="clip-card">
+      <div class="clip-vid-wrap">
+        <video id="cv${i}" src="${videoURL}#t=${start},${end}" controls preload="none" playsinline
+          style="width:100%;display:block;max-height:180px;object-fit:contain;background:#000"></video>
+        <div class="clip-score ${typeClass}">${c.score}</div>
+      </div>
+      <div class="clip-body">
+        <div class="clip-title">${c.hook}</div>
+        <div class="clip-meta">${fmtTime(start)} – ${fmtTime(end)}</div>
+        <span class="clip-tag">${c.tag}</span>
+        <div class="clip-actions">
+          <a class="dl-btn" href="${videoURL}" download="${videoFile?videoFile.name.replace(/\.[^.]+$/,''):'clip'}_clip${i+1}.mp4">Download</a>
+          <button class="cap-btn" onclick="sendPrompt('Write a viral TikTok caption for: ${c.hook.replace(/'/g,'')}')">Caption ↗</button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('results-area').innerHTML=html;
+}
+
+function fmtTime(s){
+  const m=Math.floor(s/60);
+  return m+':'+(s%60).toString().padStart(2,'0');
+}
+
+renderSteps(0);
+</script>

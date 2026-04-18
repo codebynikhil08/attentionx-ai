@@ -49,7 +49,7 @@ This project is a **frontend MVP prototype** simulating the full AI pipeline:
 ---
 
 ## 🎥 Demo Video
-👉 [Paste your Google Drive video link here]
+👉 https://drive.google.com/file/d/1qC7vUCqij8AjOY8EVljJS71Hf2ZUmeuy/view?usp=sharing
 
 ---
 
